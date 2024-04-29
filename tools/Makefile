@@ -67,6 +67,9 @@ clean:
 	$(MAKE) -C audiofile clean
 	$(MAKE) -C ido5.3_recomp clean
 
+distclean: clean
+	$(MAKE) -C ido5.3_recomp distclean
+
 define COMPILE
 $(1): $($1_SOURCES)
 	$$(CC) $(CFLAGS) $($1_CFLAGS) $$^ -o $$@ $($1_LDFLAGS) $(LDFLAGS)

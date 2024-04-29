@@ -15,7 +15,8 @@ all: cc cfe uopt ugen as1 acpp copt ujoin uld umerge usplit err.english.cc
 
 clean:
 	$(RM) cc* cfe* uopt* ugen* as1* acpp* copt* ujoin* uld* umerge* usplit* err.english.cc $(RECOMP) libc_impl.o
-
+distclean:
+	make clean
 $(RECOMP): recomp.cpp
 	$(CXX) $^ -o $@ -std=c++11 -O2 -Wno-switch `pkg-config --cflags --libs capstone`
 

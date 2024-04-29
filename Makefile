@@ -280,10 +280,20 @@ endif
 # detect prefix for MIPS toolchain
 ifneq      ($(call find-command,mips-linux-gnu-ld),)
   CROSS := mips-linux-gnu-
+else ifneq ($(call find-command,mips-unknown-linux-gnu-ld),)
+  CROSS := mips-unknown-linux-gnu-
 else ifneq ($(call find-command,mips64-linux-gnu-ld),)
   CROSS := mips64-linux-gnu-
+else ifneq ($(call find-command,mips64-unknown-linux-gnu-ld),)
+  CROSS := mips64-unknown-linux-gnu-
+else ifneq ($(call find-command,mips-elf-ld),)
+  CROSS := mips-elf-
+else ifneq ($(call find-command,mips-none-elf-ld),)
+  CROSS := mips-none-elf-
 else ifneq ($(call find-command,mips64-elf-ld),)
   CROSS := mips64-elf-
+else ifneq ($(call find-command,mips64-none-elf-ld),)
+  CROSS := mips64-none-elf-
 else
   $(error Unable to detect a suitable MIPS toolchain installed)
 endif
@@ -416,10 +426,12 @@ endif
 
 clean:
 	$(RM) -r $(BUILD_DIR_BASE)
+	$(MAKE) -C $(TOOLS_DIR) clean
+	$(MAKE) -C $(TOOLS_DIR) clean
 
 distclean: clean
 	$(PYTHON) extract_assets.py --clean
-	$(MAKE) -C $(TOOLS_DIR) clean
+	$(MAKE) -C $(TOOLS_DIR) distclean
 
 test: $(ROM)
 	$(EMULATOR) $(EMU_FLAGS) $<
@@ -515,8 +527,10 @@ $(BUILD_DIR)/%.elf: $(BUILD_DIR)/%.o
 	$(call print,Linking ELF file:,$<,$@)
 	$(V)$(LD) -e 0 -Ttext=$(SEGMENT_ADDRESS) -Map $@.map -o $@ $<
 # Override for leveldata.elf, which otherwise matches the above pattern
+# Has to be a static pattern rule for make-4.4 and above to trigger the second
+# expansion.
 .SECONDEXPANSION:
-$(BUILD_DIR)/levels/%/leveldata.elf: $(BUILD_DIR)/levels/%/leveldata.o $(BUILD_DIR)/bin/$$(TEXTURE_BIN).elf
+$(LEVEL_ELF_FILES): $(BUILD_DIR)/levels/%/leveldata.elf: $(BUILD_DIR)/levels/%/leveldata.o $(BUILD_DIR)/bin/$$(TEXTURE_BIN).elf
 	$(call print,Linking ELF file:,$<,$@)
 	$(V)$(LD) -e 0 -Ttext=$(SEGMENT_ADDRESS) -Map $@.map --just-symbols=$(BUILD_DIR)/bin/$(TEXTURE_BIN).elf -o $@ $<
 

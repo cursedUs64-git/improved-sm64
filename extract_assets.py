@@ -3,7 +3,6 @@ import sys
 import os
 import json
 
-
 def read_asset_map():
     with open("assets.json") as f:
         ret = json.load(f)

@@ -7,7 +7,8 @@ RUN apt-get update && \
         build-essential \
         libcapstone-dev \
         pkgconf \
-        python3
+        python3 \
+		bsdmainutils
 
 RUN mkdir /sm64
 WORKDIR /sm64
