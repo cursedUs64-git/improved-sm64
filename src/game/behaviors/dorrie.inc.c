@@ -34,7 +34,7 @@ void dorrie_act_move(void) {
             targetSpeed = 10;
         } else {
             s16 circularTurn = 0x4000 - atan2s(2000.0f, o->oDorrieDistToHome - 2000.0f);
-            if ((s16)(o->oMoveAngleYaw - o->oDorrieAngleToHome) < 0) {
+            if ((s16) (o->oMoveAngleYaw - o->oDorrieAngleToHome) < 0) {
                 circularTurn = -circularTurn;
             }
 
@@ -44,7 +44,7 @@ void dorrie_act_move(void) {
 
         obj_forward_vel_approach(targetSpeed, 0.5f);
         o->oDorrieYawVel =
-            approach_s16_symmetric(o->oDorrieYawVel, (s16)(targetYaw - o->oMoveAngleYaw) / 50, 5);
+            approach_s16_symmetric(o->oDorrieYawVel, (s16) (targetYaw - o->oMoveAngleYaw) / 50, 5);
         o->oMoveAngleYaw += o->oDorrieYawVel;
     }
 
@@ -65,7 +65,7 @@ void dorrie_act_lower_head(void) {
         if (o->oTimer > 150) {
             dorrie_begin_head_raise(FALSE);
         } else if (gMarioObject->platform == o) {
-            if (o->oDorrieForwardDistToMario > 830.0f 
+            if (o->oDorrieForwardDistToMario > 830.0f
                 && set_mario_npc_dialog(MARIO_DIALOG_LOOK_UP) == MARIO_DIALOG_STATUS_START) {
                 dorrie_begin_head_raise(TRUE);
             } else if (o->oDorrieForwardDistToMario > 320.0f) {

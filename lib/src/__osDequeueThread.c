@@ -10,7 +10,9 @@ OSThread *D_8033489C = (OSThread *) &D_80334890;
 OSThread *D_803348A0 = NULL;
 u32 D_803348A4 = 0; // UNKNOWN
 #else
-OSThread_ListHead D_80334890_fix = {NULL, -1, (OSThread *) &D_80334890_fix, (OSThread *) &D_80334890_fix, NULL, 0};
+OSThread_ListHead D_80334890_fix = {
+    NULL, -1, (OSThread *) &D_80334890_fix, (OSThread *) &D_80334890_fix, NULL, 0
+};
 #endif
 
 void __osDequeueThread(OSThread **queue, OSThread *thread) {

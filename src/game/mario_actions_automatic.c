@@ -17,13 +17,13 @@
 #include "level_table.h"
 #include "rumble_init.h"
 
-#define POLE_NONE          0
+#define POLE_NONE 0
 #define POLE_TOUCHED_FLOOR 1
-#define POLE_FELL_OFF      2
+#define POLE_FELL_OFF 2
 
-#define HANG_NONE            0
+#define HANG_NONE 0
 #define HANG_HIT_CEIL_OR_OOB 1
-#define HANG_LEFT_CEIL       2
+#define HANG_LEFT_CEIL 2
 
 void add_tree_leaf_particles(struct MarioState *m) {
     f32 leafHeight;
@@ -573,7 +573,7 @@ s32 act_ledge_grab(struct MarioState *m) {
     if (m->actionTimer == 10 && (m->input & INPUT_NONZERO_ANALOG))
 #endif
     {
-		if (intendedDYaw >= DEGREES(-90) && intendedDYaw <= DEGREES(90)) {
+        if (intendedDYaw >= DEGREES(-90) && intendedDYaw <= DEGREES(90)) {
             if (hasSpaceForMario) {
                 return set_mario_action(m, ACT_LEDGE_CLIMB_SLOW_1, 0);
             }
@@ -708,8 +708,8 @@ s32 act_in_cannon(struct MarioState *m) {
             break;
 
         case 2:
-            m->faceAngle[0] -= (s16)(m->controller->stickY * 10.0f);
-            marioObj->oMarioCannonInputYaw -= (s16)(m->controller->stickX * 10.0f);
+            m->faceAngle[0] -= (s16) (m->controller->stickY * 10.0f);
+            marioObj->oMarioCannonInputYaw -= (s16) (m->controller->stickX * 10.0f);
 
             if (m->faceAngle[0] > DEGREES(80)) {
                 m->faceAngle[0] = DEGREES(80);

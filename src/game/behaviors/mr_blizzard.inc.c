@@ -70,7 +70,7 @@ static void mr_blizzard_act_spawn_snowball(void) {
     // spawn the Mr. Blizzard snowball.
     if (o->oMrBlizzardHeldObj == NULL && cur_obj_init_anim_check_frame(0, 5)) {
         o->oMrBlizzardHeldObj =
-            spawn_object_relative(0, -70, (s32)(o->oMrBlizzardGraphYOffset + 153.0f), 0, o,
+            spawn_object_relative(0, -70, (s32) (o->oMrBlizzardGraphYOffset + 153.0f), 0, o,
                                   MODEL_WHITE_PARTICLE, bhvMrBlizzardSnowball);
     } else if (cur_obj_check_anim_frame(10)) {
         o->prevObj = o->oMrBlizzardHeldObj;
@@ -404,7 +404,7 @@ static void mr_blizzard_snowball_act_1(void) {
             }
 
             // Launch the snowball relative to Mario's distance from the snowball.
-            o->oMoveAngleYaw = (s32)(o->parentObj->oMoveAngleYaw + 4000 - marioDist * 4.0f);
+            o->oMoveAngleYaw = (s32) (o->parentObj->oMoveAngleYaw + 4000 - marioDist * 4.0f);
             o->oForwardVel = 40.0f;
             o->oVelY = -20.0f + marioDist * 0.075f;
         }

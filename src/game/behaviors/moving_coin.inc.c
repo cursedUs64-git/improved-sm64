@@ -29,8 +29,7 @@ s32 coin_step(s16 *collisionFlagsPtr) {
 
     obj_check_floor_death(*collisionFlagsPtr, sObjFloor);
 
-    if ((*collisionFlagsPtr & OBJ_COL_FLAG_GROUNDED)
-        && !(*collisionFlagsPtr & OBJ_COL_FLAG_NO_Y_VEL)) {
+    if ((*collisionFlagsPtr & OBJ_COL_FLAG_GROUNDED) && !(*collisionFlagsPtr & OBJ_COL_FLAG_NO_Y_VEL)) {
         cur_obj_play_sound_2(SOUND_GENERAL_COIN_DROP);
         return TRUE;
     }

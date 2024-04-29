@@ -4,12 +4,12 @@
 #include "PR/R4300.h"
 // TODO: This define is from piint.h, but including that causes problems...
 #define UPDATE_REG(reg, var)                                                                           \
-    if (cHandle->var != pihandle->var) \
+    if (cHandle->var != pihandle->var)                                                                 \
         IO_WRITE(reg, pihandle->var);
 // TODO: This define is from os.h, but including that causes problems...
 #define PI_DOMAIN1 0
 // TODO: These defines are from PR/rcp.h, but including that causes problems...
-#define IO_WRITE(addr, data) (*(vu32 *) PHYS_TO_K1(addr) = (u32)(data))
+#define IO_WRITE(addr, data) (*(vu32 *) PHYS_TO_K1(addr) = (u32) (data))
 
 #ifdef VERSION_SH
 extern OSPiHandle *__osCurrentHandle[2];
@@ -45,7 +45,8 @@ s32 osEPiRawStartDma(OSPiHandle *pihandle, s32 dir, u32 cart_addr, void *dram_ad
     }
 #endif
     HW_REG(PI_DRAM_ADDR_REG, void *) = (void *) osVirtualToPhysical(dram_addr);
-    HW_REG(PI_CART_ADDR_REG, void *) = (void *) (((uintptr_t) pihandle->baseAddress | cart_addr) & 0x1fffffff);
+    HW_REG(PI_CART_ADDR_REG, void *) =
+        (void *) (((uintptr_t) pihandle->baseAddress | cart_addr) & 0x1fffffff);
 
     switch (dir) {
         case OS_READ:

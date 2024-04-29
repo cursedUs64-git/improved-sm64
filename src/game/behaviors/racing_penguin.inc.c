@@ -84,7 +84,7 @@ static void racing_penguin_act_race(void) {
         obj_forward_vel_approach(targetSpeed, 0.4f);
 
         cur_obj_init_animation_with_sound(1);
-        cur_obj_rotate_yaw_toward(o->oPathedTargetYaw, (s32)(15.0f * o->oForwardVel));
+        cur_obj_rotate_yaw_toward(o->oPathedTargetYaw, (s32) (15.0f * o->oForwardVel));
 
         if (cur_obj_check_if_at_animation_end() && (o->oMoveFlags & OBJ_MOVE_MASK_ON_GROUND)) {
             spawn_object_relative_with_scale(0, 0, -100, 0, 4.0f, o, MODEL_SMOKE, bhvWhitePuffSmoke2);
@@ -141,8 +141,9 @@ static void racing_penguin_act_show_final_text(void) {
         }
     } else if (o->oRacingPenguinFinalTextbox > 0) {
         s32 textResult;
-        if ((textResult = cur_obj_update_dialog_with_cutscene(MARIO_DIALOG_LOOK_UP, 
-            DIALOG_FLAG_TURN_TO_MARIO, CUTSCENE_DIALOG, o->oRacingPenguinFinalTextbox))) {
+        if ((textResult =
+                 cur_obj_update_dialog_with_cutscene(MARIO_DIALOG_LOOK_UP, DIALOG_FLAG_TURN_TO_MARIO,
+                                                     CUTSCENE_DIALOG, o->oRacingPenguinFinalTextbox))) {
             o->oRacingPenguinFinalTextbox = -1;
             o->oTimer = 0;
         }

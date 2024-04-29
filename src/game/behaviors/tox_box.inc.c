@@ -15,7 +15,7 @@ void tox_box_shake_screen(void) {
 }
 
 void tox_box_move(f32 forwardVel, f32 a1, s16 deltaPitch, s16 deltaRoll) {
-    o->oPosY = 99.41124 * sins((f32)(o->oTimer + 1) / 8 * 0x8000) + o->oHomeY + 3.0f;
+    o->oPosY = 99.41124 * sins((f32) (o->oTimer + 1) / 8 * 0x8000) + o->oHomeY + 3.0f;
     o->oForwardVel = forwardVel;
     o->oUpVel = a1;
     o->oFaceAnglePitch += deltaPitch;
@@ -81,14 +81,8 @@ void tox_box_act_0(void) {
 }
 
 void (*sToxBoxActions[])(void) = {
-    tox_box_act_0,
-    tox_box_act_1,
-    tox_box_act_2,
-    tox_box_act_3,
-    tox_box_act_4,
-    tox_box_act_5,
-    tox_box_act_6,
-    tox_box_act_7,
+    tox_box_act_0, tox_box_act_1, tox_box_act_2, tox_box_act_3,
+    tox_box_act_4, tox_box_act_5, tox_box_act_6, tox_box_act_7,
 };
 
 void bhv_tox_box_loop(void) {

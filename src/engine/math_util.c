@@ -18,9 +18,9 @@ int gSplineState;
 
 #ifdef __GNUC__
 #if defined(__clang__)
-  #pragma GCC diagnostic ignored "-Wreturn-stack-address"
+#pragma GCC diagnostic ignored "-Wreturn-stack-address"
 #else
-  #pragma GCC diagnostic ignored "-Wreturn-local-addr"
+#pragma GCC diagnostic ignored "-Wreturn-local-addr"
 #endif
 #endif
 
@@ -169,10 +169,12 @@ void mtxf_identity(Mat4 mtx) {
     // These loops must be one line to match on -O2
 
     // initialize everything except the first and last cells to 0
-    for (dest = (f32 *) mtx + 1, i = 0; i < 14; dest++, i++) *dest = 0;
+    for (dest = (f32 *) mtx + 1, i = 0; i < 14; dest++, i++)
+        *dest = 0;
 
     // initialize the diagonal cells to 1
-    for (dest = (f32 *) mtx, i = 0; i < 4; dest += 5, i++) *dest = 1;
+    for (dest = (f32 *) mtx, i = 0; i < 4; dest += 5, i++)
+        *dest = 1;
 }
 
 /**
@@ -701,7 +703,7 @@ static u16 atan2_lookup(f32 y, f32 x) {
     if (x == 0) {
         ret = gArctanTable[0];
     } else {
-        ret = gArctanTable[(s32)(y / x * 1024 + 0.5f)];
+        ret = gArctanTable[(s32) (y / x * 1024 + 0.5f)];
     }
     return ret;
 }

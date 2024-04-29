@@ -36,7 +36,7 @@ OSViMode D_80334990 = {
 };
 
 OSViMode D_803349E0 = {
-    /*type*/ 30, //osViModePalLan1
+    /*type*/ 30, // osViModePalLan1
     /*comRegs*/
     { /*ctrl*/ 12574,
       /*width*/ 320,

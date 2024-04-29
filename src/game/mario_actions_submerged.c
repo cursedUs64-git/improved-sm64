@@ -143,7 +143,7 @@ static void apply_water_current(struct MarioState *m, Vec3f step) {
             s16 pitchToWhirlpool = atan2s(lateralDist, dy);
             s16 yawToWhirlpool = atan2s(dz, dx);
 
-            yawToWhirlpool -= (s16)(DEGREES(45) * 1000.0f / (distance + 1000.0f));
+            yawToWhirlpool -= (s16) (DEGREES(45) * 1000.0f / (distance + 1000.0f));
 
             if (whirlpool->strength >= 0) {
                 if (gCurrLevelNum == LEVEL_DDD && gCurrAreaIndex == 2) {
@@ -253,7 +253,7 @@ static void update_swimming_speed(struct MarioState *m, f32 decelThreshold) {
 }
 
 static void update_swimming_yaw(struct MarioState *m) {
-    s16 targetYawVel = -(s16)(10.0f * m->controller->stickX);
+    s16 targetYawVel = -(s16) (10.0f * m->controller->stickX);
 
     if (targetYawVel > 0) {
         if (m->angleVel[1] < 0) {
@@ -282,7 +282,7 @@ static void update_swimming_yaw(struct MarioState *m) {
 }
 
 static void update_swimming_pitch(struct MarioState *m) {
-    s16 targetPitch = -(s16)(252.0f * m->controller->stickY);
+    s16 targetPitch = -(s16) (252.0f * m->controller->stickY);
 
     s16 pitchVel;
     if (m->faceAngle[0] < 0) {
@@ -488,11 +488,12 @@ static void play_swimming_noise(struct MarioState *m) {
     s16 animFrame = m->marioObj->header.gfx.animInfo.animFrame;
 
     // This must be one line to match on -O2
-    if (animFrame == 0 || animFrame == 12) play_sound(SOUND_ACTION_UNKNOWN434, m->marioObj->header.gfx.cameraToObject);
+    if (animFrame == 0 || animFrame == 12)
+        play_sound(SOUND_ACTION_UNKNOWN434, m->marioObj->header.gfx.cameraToObject);
 }
 
 static s32 check_water_jump(struct MarioState *m) {
-    s32 probe = (s32)(m->pos[1] + 1.5f);
+    s32 probe = (s32) (m->pos[1] + 1.5f);
 
     if (m->input & INPUT_A_PRESSED) {
         if (probe >= m->waterLevel - 80 && m->faceAngle[0] >= 0 && m->controller->stickY < -60.0f) {
@@ -1064,7 +1065,7 @@ static s32 act_caught_in_whirlpool(struct MarioState *m) {
         angleChange = DEGREES(33.75);
     } else if (distance < 256.0f) {
         newDistance = distance - (12.0f - distance / 32.0f);
-        angleChange = (s16)(DEGREES(39.375) - distance * 20.0f);
+        angleChange = (s16) (DEGREES(39.375) - distance * 20.0f);
     } else {
         newDistance = distance - 4.0f;
         angleChange = DEGREES(11.25);
@@ -1247,7 +1248,7 @@ static s32 act_metal_water_walking(struct MarioState *m) {
         return set_mario_action(m, ACT_METAL_WATER_STANDING, 0);
     }
 
-    if ((val04 = (s32)(m->forwardVel / 4.0f * 0x10000)) < 0x1000) {
+    if ((val04 = (s32) (m->forwardVel / 4.0f * 0x10000)) < 0x1000) {
         val04 = 0x1000;
     }
 
@@ -1289,7 +1290,7 @@ static s32 act_hold_metal_water_walking(struct MarioState *m) {
 
     m->intendedMag *= 0.4f;
 
-    if ((val04 = (s32)(m->forwardVel / 2.0f * 0x10000)) < 0x1000) {
+    if ((val04 = (s32) (m->forwardVel / 2.0f * 0x10000)) < 0x1000) {
         val04 = 0x1000;
     }
 

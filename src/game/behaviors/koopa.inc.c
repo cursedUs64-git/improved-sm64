@@ -603,8 +603,8 @@ static void koopa_the_quick_act_race(void) {
             f32 downhillSteepness;
             s32 bowlingBallStatus;
 
-            downhillSteepness = 1.0f + sins((s16)(f32) o->oPathedTargetPitch);
-            cur_obj_rotate_yaw_toward(o->oPathedTargetYaw, (s32)(o->oKoopaAgility * 150.0f));
+            downhillSteepness = 1.0f + sins((s16) (f32) o->oPathedTargetPitch);
+            cur_obj_rotate_yaw_toward(o->oPathedTargetYaw, (s32) (o->oKoopaAgility * 150.0f));
 
             switch (o->oSubAction) {
                 case KOOPA_THE_QUICK_SUB_ACT_START_RUN:
@@ -617,7 +617,7 @@ static void koopa_the_quick_act_race(void) {
                     if (o->parentObj->oKoopaRaceEndpointRaceStatus != 0 && o->oDistanceToMario > 1500.0f
                         && (o->oPathedPrevWaypointFlags & WAYPOINT_MASK_00FF) < 28) {
                         // Move faster if Mario has already finished the race
-						// but only if KtQ is far from Mario and the finish line
+                        // but only if KtQ is far from Mario and the finish line
                         o->oKoopaAgility = 8.0f;
                     } else if (o->oKoopaTheQuickRaceIndex != KOOPA_THE_QUICK_BOB_INDEX) {
                         o->oKoopaAgility = 6.0f;
@@ -731,8 +731,9 @@ static void koopa_the_quick_act_after_race(void) {
             o->oFlags &= ~OBJ_FLAG_ACTIVE_FROM_AFAR;
         }
     } else if (o->parentObj->oKoopaRaceEndpointDialog > 0) {
-        s32 dialogResponse = cur_obj_update_dialog_with_cutscene(MARIO_DIALOG_LOOK_UP, 
-            DIALOG_FLAG_TURN_TO_MARIO, CUTSCENE_DIALOG, o->parentObj->oKoopaRaceEndpointDialog);
+        s32 dialogResponse = cur_obj_update_dialog_with_cutscene(
+            MARIO_DIALOG_LOOK_UP, DIALOG_FLAG_TURN_TO_MARIO, CUTSCENE_DIALOG,
+            o->parentObj->oKoopaRaceEndpointDialog);
         if (dialogResponse != 0) {
             o->parentObj->oKoopaRaceEndpointDialog = DIALOG_NONE;
             o->oTimer = 0;

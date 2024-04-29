@@ -774,7 +774,7 @@ OSViMode osViModeTable[] = {
           /*vBurst*/ 852585,
           /*vIntr*/ 2 } } },
 #endif
-#if defined(VERSION_US) || defined(VERSION_EU) || defined (VERSION_SH)
+#if defined(VERSION_US) || defined(VERSION_EU) || defined(VERSION_SH)
     /*osViModePalLpn1*/
     { /*type*/ 28,
       /*comRegs*/

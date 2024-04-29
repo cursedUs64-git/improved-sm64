@@ -34,7 +34,7 @@ void __osPfsRequestOneChannel(int channel) {
 
     _osLastSentSiCmd = CONT_CMD_REQUEST_STATUS;
     __osPfsPifRam.pifstatus = CONT_CMD_EXE;
-    ptr = (u8 *)&__osPfsPifRam;
+    ptr = (u8 *) &__osPfsPifRam;
 
     requestformat.txsize = CONT_CMD_REQUEST_STATUS_TX;
     requestformat.rxsize = CONT_CMD_REQUEST_STATUS_RX;
@@ -46,7 +46,7 @@ void __osPfsRequestOneChannel(int channel) {
         *ptr++ = 0;
     }
 
-    *(__OSContRequesFormatShort *)ptr = requestformat;
+    *(__OSContRequesFormatShort *) ptr = requestformat;
     ptr += sizeof(__OSContRequesFormatShort);
     *ptr = CONT_CMD_END;
 }
@@ -55,11 +55,11 @@ void __osPfsGetOneChannelData(int channel, OSContStatus *data) {
     u8 *ptr;
     __OSContRequesFormatShort requestformat;
     int i;
-    ptr = (u8*)&__osPfsPifRam;
+    ptr = (u8 *) &__osPfsPifRam;
     for (i = 0; i < channel; i++) {
         ptr++;
     }
-    requestformat = *(__OSContRequesFormatShort *)ptr;
+    requestformat = *(__OSContRequesFormatShort *) ptr;
     data->errnum = CHNL_ERR(requestformat);
     if (data->errnum == 0) {
         data->type = (requestformat.typel << 8) | (requestformat.typeh);

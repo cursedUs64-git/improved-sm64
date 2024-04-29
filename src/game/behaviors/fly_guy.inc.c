@@ -102,7 +102,7 @@ static void fly_guy_act_lunge(void) {
         obj_face_pitch_approach(o->oFlyGuyLungeTargetPitch, 0x400);
 
         // Possible values: {-0x1000, 0x0000, 0x1000}
-        o->oFlyGuyTargetRoll = 0x1000 * (s16)(random_float() * 3.0f) - 0x1000;
+        o->oFlyGuyTargetRoll = 0x1000 * (s16) (random_float() * 3.0f) - 0x1000;
         o->oTimer = 0;
     } else {
         // Twirl back upward

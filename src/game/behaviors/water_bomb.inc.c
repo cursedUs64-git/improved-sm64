@@ -30,7 +30,7 @@ static struct ObjectHitbox sWaterBombHitbox = {
  */
 void bhv_water_bomb_spawner_update(void) {
     f32 latDistToMario;
-    f32 spawnerRadius = 50 * (u16)(o->oBehParams >> 16) + 200.0f;
+    f32 spawnerRadius = 50 * (u16) (o->oBehParams >> 16) + 200.0f;
 
     latDistToMario = lateral_dist_between_objects(o, gMarioObject);
 

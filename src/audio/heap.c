@@ -155,11 +155,11 @@ void build_vol_rampings_table(s32 UNUSED unused, s32 len) {
             d = 1;
         }
 
-        gLeftVolRampings[0][i]  = kth_root(      d, k - 1);
+        gLeftVolRampings[0][i] = kth_root(d, k - 1);
         gRightVolRampings[0][i] = kth_root(1.0 / d, k - 1) * 65536.0;
-        gLeftVolRampings[1][i]  = kth_root(      d, k);
+        gLeftVolRampings[1][i] = kth_root(d, k);
         gRightVolRampings[1][i] = kth_root(1.0 / d, k) * 65536.0;
-        gLeftVolRampings[2][i]  = kth_root(      d, k + 1);
+        gLeftVolRampings[2][i] = kth_root(d, k + 1);
         gRightVolRampings[2][i] = kth_root(1.0 / d, k + 1) * 65536.0;
     }
 }
@@ -215,8 +215,7 @@ void discard_bank(s32 bankId) {
 #else
             if (note->priority >= NOTE_PRIORITY_MIN) {
 #endif
-                eu_stubbed_printf_3("Kill Voice %d (ID %d) %d\n", note->waveId,
-                        bankId, note->priority);
+                eu_stubbed_printf_3("Kill Voice %d (ID %d) %d\n", note->waveId, bankId, note->priority);
                 eu_stubbed_printf_0("Warning: Running Sequence's data disappear!\n");
                 note->parentLayer->enabled = FALSE; // is 0x48, should be 0x44
                 note->parentLayer->finished = TRUE;
@@ -336,7 +335,8 @@ void unused_803160F8(struct SoundAllocPool *pool) {
 extern s32 D_SH_80315EE8;
 void sound_init_main_pools(s32 sizeForAudioInitPool) {
     sound_alloc_pool_init(&gAudioInitPool, gAudioHeap, sizeForAudioInitPool);
-    sound_alloc_pool_init(&gAudioSessionPool, gAudioHeap + sizeForAudioInitPool, gAudioHeapSize - sizeForAudioInitPool);
+    sound_alloc_pool_init(&gAudioSessionPool, gAudioHeap + sizeForAudioInitPool,
+                          gAudioHeapSize - sizeForAudioInitPool);
 }
 
 #ifdef VERSION_SH
@@ -347,22 +347,28 @@ void sound_init_main_pools(s32 sizeForAudioInitPool) {
 
 void session_pools_init(struct PoolSplit *a) {
     gAudioSessionPool.cur = gAudioSessionPool.start;
-    sound_alloc_pool_init(&gNotesAndBuffersPool, SOUND_ALLOC_FUNC(&gAudioSessionPool, a->wantSeq), a->wantSeq);
-    sound_alloc_pool_init(&gSeqAndBankPool, SOUND_ALLOC_FUNC(&gAudioSessionPool, a->wantCustom), a->wantCustom);
+    sound_alloc_pool_init(&gNotesAndBuffersPool, SOUND_ALLOC_FUNC(&gAudioSessionPool, a->wantSeq),
+                          a->wantSeq);
+    sound_alloc_pool_init(&gSeqAndBankPool, SOUND_ALLOC_FUNC(&gAudioSessionPool, a->wantCustom),
+                          a->wantCustom);
 }
 
 void seq_and_bank_pool_init(struct PoolSplit2 *a) {
     gSeqAndBankPool.cur = gSeqAndBankPool.start;
-    sound_alloc_pool_init(&gPersistentCommonPool, SOUND_ALLOC_FUNC(&gSeqAndBankPool, a->wantPersistent), a->wantPersistent);
-    sound_alloc_pool_init(&gTemporaryCommonPool, SOUND_ALLOC_FUNC(&gSeqAndBankPool, a->wantTemporary), a->wantTemporary);
+    sound_alloc_pool_init(&gPersistentCommonPool, SOUND_ALLOC_FUNC(&gSeqAndBankPool, a->wantPersistent),
+                          a->wantPersistent);
+    sound_alloc_pool_init(&gTemporaryCommonPool, SOUND_ALLOC_FUNC(&gSeqAndBankPool, a->wantTemporary),
+                          a->wantTemporary);
 }
 
 void persistent_pools_init(struct PoolSplit *a) {
     gPersistentCommonPool.cur = gPersistentCommonPool.start;
-    sound_alloc_pool_init(&gSeqLoadedPool.persistent.pool, SOUND_ALLOC_FUNC(&gPersistentCommonPool, a->wantSeq), a->wantSeq);
-    sound_alloc_pool_init(&gBankLoadedPool.persistent.pool, SOUND_ALLOC_FUNC(&gPersistentCommonPool, a->wantBank), a->wantBank);
-    sound_alloc_pool_init(&gUnusedLoadedPool.persistent.pool, SOUND_ALLOC_FUNC(&gPersistentCommonPool, a->wantUnused),
-                  a->wantUnused);
+    sound_alloc_pool_init(&gSeqLoadedPool.persistent.pool,
+                          SOUND_ALLOC_FUNC(&gPersistentCommonPool, a->wantSeq), a->wantSeq);
+    sound_alloc_pool_init(&gBankLoadedPool.persistent.pool,
+                          SOUND_ALLOC_FUNC(&gPersistentCommonPool, a->wantBank), a->wantBank);
+    sound_alloc_pool_init(&gUnusedLoadedPool.persistent.pool,
+                          SOUND_ALLOC_FUNC(&gPersistentCommonPool, a->wantUnused), a->wantUnused);
     persistent_pool_clear(&gSeqLoadedPool.persistent);
     persistent_pool_clear(&gBankLoadedPool.persistent);
     persistent_pool_clear(&gUnusedLoadedPool.persistent);
@@ -370,10 +376,12 @@ void persistent_pools_init(struct PoolSplit *a) {
 
 void temporary_pools_init(struct PoolSplit *a) {
     gTemporaryCommonPool.cur = gTemporaryCommonPool.start;
-    sound_alloc_pool_init(&gSeqLoadedPool.temporary.pool, SOUND_ALLOC_FUNC(&gTemporaryCommonPool, a->wantSeq), a->wantSeq);
-    sound_alloc_pool_init(&gBankLoadedPool.temporary.pool, SOUND_ALLOC_FUNC(&gTemporaryCommonPool, a->wantBank), a->wantBank);
-    sound_alloc_pool_init(&gUnusedLoadedPool.temporary.pool, SOUND_ALLOC_FUNC(&gTemporaryCommonPool, a->wantUnused),
-                  a->wantUnused);
+    sound_alloc_pool_init(&gSeqLoadedPool.temporary.pool,
+                          SOUND_ALLOC_FUNC(&gTemporaryCommonPool, a->wantSeq), a->wantSeq);
+    sound_alloc_pool_init(&gBankLoadedPool.temporary.pool,
+                          SOUND_ALLOC_FUNC(&gTemporaryCommonPool, a->wantBank), a->wantBank);
+    sound_alloc_pool_init(&gUnusedLoadedPool.temporary.pool,
+                          SOUND_ALLOC_FUNC(&gTemporaryCommonPool, a->wantUnused), a->wantUnused);
     temporary_pool_clear(&gSeqLoadedPool.temporary);
     temporary_pool_clear(&gBankLoadedPool.temporary);
     temporary_pool_clear(&gUnusedLoadedPool.temporary);
@@ -453,19 +461,21 @@ void *alloc_bank_or_seq(struct SoundMultiPool *arg0, s32 arg1, s32 size, s32 arg
 #endif
 
 #ifdef VERSION_SH
-        if (tp->entries[0].id == (s8)nullID) {
+        if (tp->entries[0].id == (s8) nullID) {
             firstVal = SOUND_LOAD_STATUS_NOT_LOADED;
         } else {
             firstVal = table[tp->entries[0].id];
         }
-        if (tp->entries[1].id == (s8)nullID) {
+        if (tp->entries[1].id == (s8) nullID) {
             secondVal = SOUND_LOAD_STATUS_NOT_LOADED;
         } else {
             secondVal = table[tp->entries[1].id];
         }
 #else
-        firstVal  = (tp->entries[0].id == (s8)nullID ? SOUND_LOAD_STATUS_NOT_LOADED : table[tp->entries[0].id]);
-        secondVal = (tp->entries[1].id == (s8)nullID ? SOUND_LOAD_STATUS_NOT_LOADED : table[tp->entries[1].id]);
+        firstVal = (tp->entries[0].id == (s8) nullID ? SOUND_LOAD_STATUS_NOT_LOADED
+                                                     : table[tp->entries[0].id]);
+        secondVal = (tp->entries[1].id == (s8) nullID ? SOUND_LOAD_STATUS_NOT_LOADED
+                                                      : table[tp->entries[1].id]);
 #endif
 
 #if defined(VERSION_JP) || defined(VERSION_US)
@@ -542,7 +552,8 @@ void *alloc_bank_or_seq(struct SoundMultiPool *arg0, s32 arg1, s32 size, s32 arg
             tp->nextSide = 1;
         } else {
             eu_stubbed_printf_0("WARNING: NO FREE AUTOSEQ AREA.\n");
-            if ((firstVal == SOUND_LOAD_STATUS_DISCARDABLE) && (secondVal == SOUND_LOAD_STATUS_DISCARDABLE)) {
+            if ((firstVal == SOUND_LOAD_STATUS_DISCARDABLE)
+                && (secondVal == SOUND_LOAD_STATUS_DISCARDABLE)) {
                 // Use the opposite side from last time.
             } else if (firstVal == SOUND_LOAD_STATUS_DISCARDABLE) {
                 tp->nextSide = 0;
@@ -565,7 +576,8 @@ void *alloc_bank_or_seq(struct SoundMultiPool *arg0, s32 arg1, s32 size, s32 arg
                 if (poolIdx == 0) {
                     if (firstVal == SOUND_LOAD_STATUS_COMPLETE) {
                         for (i = 0; i < SEQUENCE_PLAYERS; i++) {
-                            if (gSequencePlayers[i].enabled && gSequencePlayers[i].seqId == tp->entries[0].id) {
+                            if (gSequencePlayers[i].enabled
+                                && gSequencePlayers[i].seqId == tp->entries[0].id) {
                                 break;
                             }
                         }
@@ -576,7 +588,8 @@ void *alloc_bank_or_seq(struct SoundMultiPool *arg0, s32 arg1, s32 size, s32 arg
                     }
                     if (secondVal == SOUND_LOAD_STATUS_COMPLETE) {
                         for (i = 0; i < SEQUENCE_PLAYERS; i++) {
-                            if (gSequencePlayers[i].enabled && gSequencePlayers[i].seqId == tp->entries[1].id) {
+                            if (gSequencePlayers[i].enabled
+                                && gSequencePlayers[i].seqId == tp->entries[1].id) {
                                 break;
                             }
                         }
@@ -629,14 +642,14 @@ void *alloc_bank_or_seq(struct SoundMultiPool *arg0, s32 arg1, s32 size, s32 arg
                     }
                 }
                 return NULL;
-                out:;
+            out:;
 #endif
             }
         }
 #endif
 
         pool = &arg0->temporary.pool;
-        if (tp->entries[tp->nextSide].id != (s8)nullID) {
+        if (tp->entries[tp->nextSide].id != (s8) nullID) {
             table[tp->entries[tp->nextSide].id] = SOUND_LOAD_STATUS_NOT_LOADED;
             if (isSound == TRUE) {
                 discard_bank(tp->entries[tp->nextSide].id);
@@ -652,31 +665,31 @@ void *alloc_bank_or_seq(struct SoundMultiPool *arg0, s32 arg1, s32 size, s32 arg
                 pool->cur = pool->start + size;
 
 #ifdef VERSION_SH
-                if (tp->entries[1].id != (s32)nullID)
+                if (tp->entries[1].id != (s32) nullID)
 #endif
-                if (tp->entries[1].ptr < pool->cur) {
-                    eu_stubbed_printf_0("WARNING: Before Area Overlaid After.");
+                    if (tp->entries[1].ptr < pool->cur) {
+                        eu_stubbed_printf_0("WARNING: Before Area Overlaid After.");
 
-                    // Throw out the entry on the other side if it doesn't fit.
-                    // (possible @bug: what if it's currently being loaded?)
-                    table[tp->entries[1].id] = SOUND_LOAD_STATUS_NOT_LOADED;
+                        // Throw out the entry on the other side if it doesn't fit.
+                        // (possible @bug: what if it's currently being loaded?)
+                        table[tp->entries[1].id] = SOUND_LOAD_STATUS_NOT_LOADED;
 
-                    switch (isSound) {
-                        case FALSE:
-                            discard_sequence(tp->entries[1].id);
-                            break;
-                        case TRUE:
-                            discard_bank(tp->entries[1].id);
-                            break;
-                    }
+                        switch (isSound) {
+                            case FALSE:
+                                discard_sequence(tp->entries[1].id);
+                                break;
+                            case TRUE:
+                                discard_bank(tp->entries[1].id);
+                                break;
+                        }
 
-                    tp->entries[1].id = (s32)nullID;
+                        tp->entries[1].id = (s32) nullID;
 #if defined(VERSION_EU) || defined(VERSION_SH)
-                    tp->entries[1].ptr = pool->start + pool->size;
+                        tp->entries[1].ptr = pool->start + pool->size;
 #else
                     tp->entries[1].ptr = pool->size + pool->start;
 #endif
-                }
+                    }
 
                 ret = tp->entries[0].ptr;
                 break;
@@ -687,31 +700,31 @@ void *alloc_bank_or_seq(struct SoundMultiPool *arg0, s32 arg1, s32 size, s32 arg
 #elif defined(VERSION_EU)
                 tp->entries[1].ptr = pool->start + pool->size - size - 0x10;
 #else
-                tp->entries[1].ptr = pool->size + pool->start - size - 0x10;
+            tp->entries[1].ptr = pool->size + pool->start - size - 0x10;
 #endif
                 tp->entries[1].id = id;
                 tp->entries[1].size = size;
 
 #ifdef VERSION_SH
-                if (tp->entries[0].id != (s32)nullID)
+                if (tp->entries[0].id != (s32) nullID)
 #endif
-                if (tp->entries[1].ptr < pool->cur) {
-                    eu_stubbed_printf_0("WARNING: After Area Overlaid Before.");
+                    if (tp->entries[1].ptr < pool->cur) {
+                        eu_stubbed_printf_0("WARNING: After Area Overlaid Before.");
 
-                    table[tp->entries[0].id] = SOUND_LOAD_STATUS_NOT_LOADED;
+                        table[tp->entries[0].id] = SOUND_LOAD_STATUS_NOT_LOADED;
 
-                    switch (isSound) {
-                        case FALSE:
-                            discard_sequence(tp->entries[0].id);
-                            break;
-                        case TRUE:
-                            discard_bank(tp->entries[0].id);
-                            break;
+                        switch (isSound) {
+                            case FALSE:
+                                discard_sequence(tp->entries[0].id);
+                                break;
+                            case TRUE:
+                                discard_bank(tp->entries[0].id);
+                                break;
+                        }
+
+                        tp->entries[0].id = (s32) nullID;
+                        pool->cur = pool->start;
                     }
-
-                    tp->entries[0].id = (s32)nullID;
-                    pool->cur = pool->start;
-                }
 
                 ret = tp->entries[1].ptr;
                 break;
@@ -738,7 +751,8 @@ void *alloc_bank_or_seq(struct SoundMultiPool *arg0, s32 arg1, s32 size, s32 arg
 
     if (ret == NULL)
 #else
-    arg0->persistent.entries[arg0->persistent.numEntries].ptr = soundAlloc(&arg0->persistent.pool, arg1 * size);
+    arg0->persistent.entries[arg0->persistent.numEntries].ptr =
+        soundAlloc(&arg0->persistent.pool, arg1 * size);
 
     if (arg0->persistent.entries[arg0->persistent.numEntries].ptr == NULL)
 #endif
@@ -751,9 +765,9 @@ void *alloc_bank_or_seq(struct SoundMultiPool *arg0, s32 arg1, s32 size, s32 arg
 #elif defined(VERSION_SH)
                 return alloc_bank_or_seq(poolIdx, size, 0, id);
 #else
-                // Prevent tail call optimization.
-                ret = alloc_bank_or_seq(arg0, arg1, size, 0, id);
-                return ret;
+            // Prevent tail call optimization.
+            ret = alloc_bank_or_seq(arg0, arg1, size, 0, id);
+            return ret;
 #endif
             case 1:
 #ifdef VERSION_SH
@@ -771,7 +785,8 @@ void *alloc_bank_or_seq(struct SoundMultiPool *arg0, s32 arg1, s32 size, s32 arg
 #if defined(VERSION_EU) || defined(VERSION_SH)
     return arg0->persistent.entries[arg0->persistent.numEntries++].ptr;
 #else
-    arg0->persistent.numEntries++; return arg0->persistent.entries[arg0->persistent.numEntries - 1].ptr;
+    arg0->persistent.numEntries++;
+    return arg0->persistent.entries[arg0->persistent.numEntries - 1].ptr;
 #endif
 #ifdef VERSION_SH
 #undef isSound
@@ -793,9 +808,9 @@ void *get_bank_or_seq(s32 poolIdx, s32 arg1, s32 id) {
 }
 void *get_bank_or_seq_inner(s32 poolIdx, s32 arg1, s32 bankId) {
     u32 i;
-    struct SoundMultiPool* loadedPool;
-    struct TemporaryPool* temporary;
-    struct PersistentPool* persistent;
+    struct SoundMultiPool *loadedPool;
+    struct TemporaryPool *temporary;
+    struct PersistentPool *persistent;
 
     switch (poolIdx) {
         case 0:
@@ -982,7 +997,6 @@ void clear_curr_ai_buffer(void) {
     }
 }
 #endif
-
 
 #if defined(VERSION_EU) || defined(VERSION_SH)
 s32 audio_shut_down_and_reset_step(void) {
@@ -1181,29 +1195,38 @@ void audio_reset_session(void) {
 #if defined(VERSION_EU) || defined(VERSION_SH)
     gAudioBufferParameters.frequency = preset->frequency;
     gAudioBufferParameters.aiFrequency = osAiSetFrequency(gAudioBufferParameters.frequency);
-    gAudioBufferParameters.samplesPerFrameTarget = ALIGN16(gAudioBufferParameters.frequency / gRefreshRate);
+    gAudioBufferParameters.samplesPerFrameTarget =
+        ALIGN16(gAudioBufferParameters.frequency / gRefreshRate);
     gAudioBufferParameters.minAiBufferLength = gAudioBufferParameters.samplesPerFrameTarget - 0x10;
     gAudioBufferParameters.maxAiBufferLength = gAudioBufferParameters.samplesPerFrameTarget + 0x10;
 #ifdef VERSION_SH
-    gAudioBufferParameters.updatesPerFrame = (gAudioBufferParameters.samplesPerFrameTarget + 0x10) / 192 + 1;
-    gAudioBufferParameters.samplesPerUpdate = (gAudioBufferParameters.samplesPerFrameTarget / gAudioBufferParameters.updatesPerFrame) & -8;
+    gAudioBufferParameters.updatesPerFrame =
+        (gAudioBufferParameters.samplesPerFrameTarget + 0x10) / 192 + 1;
+    gAudioBufferParameters.samplesPerUpdate =
+        (gAudioBufferParameters.samplesPerFrameTarget / gAudioBufferParameters.updatesPerFrame) & -8;
 #else
-    gAudioBufferParameters.updatesPerFrame = (gAudioBufferParameters.samplesPerFrameTarget + 0x10) / 160 + 1;
-    gAudioBufferParameters.samplesPerUpdate = (gAudioBufferParameters.samplesPerFrameTarget / gAudioBufferParameters.updatesPerFrame) & 0xfff8;
+    gAudioBufferParameters.updatesPerFrame =
+        (gAudioBufferParameters.samplesPerFrameTarget + 0x10) / 160 + 1;
+    gAudioBufferParameters.samplesPerUpdate =
+        (gAudioBufferParameters.samplesPerFrameTarget / gAudioBufferParameters.updatesPerFrame)
+        & 0xfff8;
 #endif
     gAudioBufferParameters.samplesPerUpdateMax = gAudioBufferParameters.samplesPerUpdate + 8;
     gAudioBufferParameters.samplesPerUpdateMin = gAudioBufferParameters.samplesPerUpdate - 8;
     gAudioBufferParameters.resampleRate = 32000.0f / FLOAT_CAST(gAudioBufferParameters.frequency);
 #ifdef VERSION_SH
-    gAudioBufferParameters.unkUpdatesPerFrameScaled = (1.0f / 256.0f) / gAudioBufferParameters.updatesPerFrame;
+    gAudioBufferParameters.unkUpdatesPerFrameScaled =
+        (1.0f / 256.0f) / gAudioBufferParameters.updatesPerFrame;
 #else
-    gAudioBufferParameters.unkUpdatesPerFrameScaled = (3.0f / 1280.0f) / gAudioBufferParameters.updatesPerFrame;
+    gAudioBufferParameters.unkUpdatesPerFrameScaled =
+        (3.0f / 1280.0f) / gAudioBufferParameters.updatesPerFrame;
 #endif
     gAudioBufferParameters.updatesPerFrameInv = 1.0f / gAudioBufferParameters.updatesPerFrame;
 
     gMaxSimultaneousNotes = preset->maxSimultaneousNotes;
     gVolume = preset->volume;
-    gTempoInternalToExternal = (u32) (gAudioBufferParameters.updatesPerFrame * 2880000.0f / gTatumsPerBeat / D_EU_802298D0);
+    gTempoInternalToExternal =
+        (u32) (gAudioBufferParameters.updatesPerFrame * 2880000.0f / gTatumsPerBeat / D_EU_802298D0);
 
     gAudioBufferParameters.presetUnk4 = preset->unk1;
     gAudioBufferParameters.samplesPerFrameTarget *= gAudioBufferParameters.presetUnk4;
@@ -1215,9 +1238,11 @@ void audio_reset_session(void) {
     if (gAudioBufferParameters.presetUnk4 >= 2) {
         gAudioBufferParameters.maxAiBufferLength -= 0x10;
     }
-    gMaxAudioCmds = gMaxSimultaneousNotes * 0x14 * gAudioBufferParameters.updatesPerFrame + preset->numReverbs * 0x20 + 0x1E0;
+    gMaxAudioCmds = gMaxSimultaneousNotes * 0x14 * gAudioBufferParameters.updatesPerFrame
+                    + preset->numReverbs * 0x20 + 0x1E0;
 #else
-    gMaxAudioCmds = gMaxSimultaneousNotes * 0x10 * gAudioBufferParameters.updatesPerFrame + preset->numReverbs * 0x20 + 0x300;
+    gMaxAudioCmds = gMaxSimultaneousNotes * 0x10 * gAudioBufferParameters.updatesPerFrame
+                    + preset->numReverbs * 0x20 + 0x300;
 #endif
 #else
     reverbWindowSize = preset->reverbWindowSize;
@@ -1258,20 +1283,22 @@ void audio_reset_session(void) {
 #ifdef VERSION_JP
     gTempoInternalToExternal = updatesPerFrame * 3600 / gTatumsPerBeat;
 #else
-    gTempoInternalToExternal = (u32)(updatesPerFrame * 2880000.0f / gTatumsPerBeat / 16.713f);
+    gTempoInternalToExternal = (u32) (updatesPerFrame * 2880000.0f / gTatumsPerBeat / 16.713f);
 #endif
     gMaxAudioCmds = gMaxSimultaneousNotes * 20 * updatesPerFrame + 320;
 #endif
 
 #if defined(VERSION_SH)
-    persistentMem = DOUBLE_SIZE_ON_64_BIT(preset->persistentSeqMem + preset->persistentBankMem + preset->unk18 + preset->unkMem28 + 0x10);
-    temporaryMem = DOUBLE_SIZE_ON_64_BIT(preset->temporarySeqMem + preset->temporaryBankMem + preset->unk24 + preset->unkMem2C + 0x10);
+    persistentMem = DOUBLE_SIZE_ON_64_BIT(preset->persistentSeqMem + preset->persistentBankMem
+                                          + preset->unk18 + preset->unkMem28 + 0x10);
+    temporaryMem = DOUBLE_SIZE_ON_64_BIT(preset->temporarySeqMem + preset->temporaryBankMem
+                                         + preset->unk24 + preset->unkMem2C + 0x10);
 #elif defined(VERSION_EU)
     persistentMem = DOUBLE_SIZE_ON_64_BIT(preset->persistentSeqMem + preset->persistentBankMem);
     temporaryMem = DOUBLE_SIZE_ON_64_BIT(preset->temporarySeqMem + preset->temporaryBankMem);
 #else
-    persistentMem = DOUBLE_SIZE_ON_64_BIT(preset->persistentBankMem + preset->persistentSeqMem);
-    temporaryMem = DOUBLE_SIZE_ON_64_BIT(preset->temporaryBankMem + preset->temporarySeqMem);
+persistentMem = DOUBLE_SIZE_ON_64_BIT(preset->persistentBankMem + preset->persistentSeqMem);
+temporaryMem = DOUBLE_SIZE_ON_64_BIT(preset->temporaryBankMem + preset->temporarySeqMem);
 #endif
     totalMem = persistentMem + temporaryMem;
     wantMisc = gAudioSessionPool.size - totalMem - 0x100;
@@ -1313,7 +1340,9 @@ void audio_reset_session(void) {
     init_note_free_list();
 
 #if defined(VERSION_EU) || defined(VERSION_SH)
-    gNoteSubsEu = soundAlloc(&gNotesAndBuffersPool, (gAudioBufferParameters.updatesPerFrame * gMaxSimultaneousNotes) * sizeof(struct NoteSubEu));
+    gNoteSubsEu = soundAlloc(&gNotesAndBuffersPool,
+                             (gAudioBufferParameters.updatesPerFrame * gMaxSimultaneousNotes)
+                                 * sizeof(struct NoteSubEu));
 
     for (j = 0; j != 2; j++) {
         gAudioCmdBuffers[j] = soundAlloc(&gNotesAndBuffersPool, gMaxAudioCmds * sizeof(u64));
@@ -1567,11 +1596,9 @@ struct UnkEntry *func_sh_802f1ec4(u32 size) {
             itemEnd = unkStruct->ramAddr + unkStruct->sample->size - 1;
             if (itemEnd < phi_s3 && itemStart < phi_s3) {
                 continue;
-
             }
             if (itemEnd >= temp_s2 && itemStart >= temp_s2) {
                 continue;
-
             }
 
             unkStruct->isFree = TRUE;
@@ -1623,7 +1650,8 @@ void func_sh_802f2158(struct UnkEntry *entry) {
     for (idx = 0; idx < seqCount; idx++) {
         bankId1 = gCtlEntries[idx].bankId1;
         bankId2 = gCtlEntries[idx].bankId2;
-        if ((bankId1 != 0xff && entry->bankId == bankId1) || (bankId2 != 0xff && entry->bankId == bankId2) || entry->bankId == 0) {
+        if ((bankId1 != 0xff && entry->bankId == bankId1)
+            || (bankId2 != 0xff && entry->bankId == bankId2) || entry->bankId == 0) {
             if (get_bank_or_seq(1, 2, idx) != NULL) {
                 if (IS_BANK_LOAD_COMPLETE(idx) != FALSE) {
                     for (instId = 0; instId < gCtlEntries[idx].numInstruments; instId++) {
@@ -1691,7 +1719,8 @@ void func_sh_802f23ec(void) {
     for (idx = 0; idx < seqCount; idx++) {
         bankId1 = gCtlEntries[idx].bankId1;
         bankId2 = gCtlEntries[idx].bankId2;
-        if ((bankId1 != 0xffu && entry->bankId == bankId1) || (bankId2 != 0xff && entry->bankId == bankId2) || entry->bankId == 0) {
+        if ((bankId1 != 0xffu && entry->bankId == bankId1)
+            || (bankId2 != 0xff && entry->bankId == bankId2) || entry->bankId == 0) {
             if (get_bank_or_seq(1, 3, idx) != NULL) {
                 if (IS_BANK_LOAD_COMPLETE(idx) != FALSE) {
                     for (i = 0; i < gUnkPool2.numEntries; i++) {

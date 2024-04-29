@@ -14,7 +14,8 @@ static struct ObjectHitbox sCollectStarHitbox = {
 
 void bhv_collect_star_init(void) {
     s8 starId = (o->oBehParams >> 24) & 0xFF;
-    u8 currentLevelStarFlags = save_file_get_star_flags(gCurrSaveFileNum - 1, COURSE_NUM_TO_INDEX(gCurrCourseNum));
+    u8 currentLevelStarFlags =
+        save_file_get_star_flags(gCurrSaveFileNum - 1, COURSE_NUM_TO_INDEX(gCurrCourseNum));
 
     if (currentLevelStarFlags & (1 << starId)) {
         o->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_TRANSPARENT_STAR];
@@ -148,8 +149,8 @@ void bhv_hidden_red_coin_star_init(void) {
 
     count = count_objects_with_behavior(bhvRedCoin);
     if (count == 0) {
-        struct Object *star = spawn_object_abs_with_rot(o, 0, MODEL_STAR, bhvStar,
-                                                        o->oPosX, o->oPosY, o->oPosZ, 0, 0, 0);
+        struct Object *star =
+            spawn_object_abs_with_rot(o, 0, MODEL_STAR, bhvStar, o->oPosX, o->oPosY, o->oPosZ, 0, 0, 0);
         star->oBehParams = o->oBehParams;
         o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
     }

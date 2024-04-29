@@ -60,9 +60,9 @@ void hoot_free_step(s16 fastOscY, s32 speed) {
 
     o->oPosX += o->oVelX;
     if (fastOscY == 0) {
-        o->oPosY -= o->oVelY + coss((s32)(animFrame * 3276.8)) * 50.0f / 4;
+        o->oPosY -= o->oVelY + coss((s32) (animFrame * 3276.8)) * 50.0f / 4;
     } else {
-        o->oPosY -= o->oVelY + coss((s32)(animFrame * 6553.6)) * 50.0f / 4;
+        o->oPosY -= o->oVelY + coss((s32) (animFrame * 6553.6)) * 50.0f / 4;
     }
     o->oPosZ += o->oVelZ;
 
@@ -105,7 +105,7 @@ void hoot_carry_step(s32 speed, UNUSED f32 xPrev, UNUSED f32 zPrev) {
     o->oVelZ = coss(yaw) * hSpeed;
 
     o->oPosX += o->oVelX;
-    o->oPosY -= o->oVelY + coss((s32)(animFrame * 6553.6)) * 50.0f / 4;
+    o->oPosY -= o->oVelY + coss((s32) (animFrame * 6553.6)) * 50.0f / 4;
     o->oPosZ += o->oVelZ;
 
     if (animFrame == 0) {
@@ -255,7 +255,7 @@ void bhv_hoot_loop(void) {
         case HOOT_AVAIL_WANTS_TO_TALK:
             hoot_awake_loop();
 
-            if (set_mario_npc_dialog(MARIO_DIALOG_LOOK_UP) == MARIO_DIALOG_STATUS_SPEAK 
+            if (set_mario_npc_dialog(MARIO_DIALOG_LOOK_UP) == MARIO_DIALOG_STATUS_SPEAK
                 && cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_044)) {
                 set_mario_npc_dialog(MARIO_DIALOG_STOP);
 

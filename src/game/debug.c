@@ -230,7 +230,7 @@ void print_string_array_info(const char **strArr) {
         }
         // modify the cursor position so the cursor prints at the correct location.
         // this is equivalent to (sDebugSysCursor - 8)
-        set_text_array_x_y(0, -1 - (u32)(7 - sDebugSysCursor));
+        set_text_array_x_y(0, -1 - (u32) (7 - sDebugSysCursor));
         print_debug_top_down_mapinfo(strArr[8], 0); // print the cursor
         set_text_array_x_y(0, 7 - sDebugSysCursor);
     }
@@ -310,7 +310,7 @@ UNUSED static void check_debug_button_seq(void) {
     if (!(gPlayer1Controller->buttonDown & L_TRIG)) {
         sDebugInfoButtonSeqID = 0;
     } else {
-        if ((s16)(cButtonMask = (gPlayer1Controller->buttonPressed & C_BUTTONS))) {
+        if ((s16) (cButtonMask = (gPlayer1Controller->buttonPressed & C_BUTTONS))) {
             if (buttonArr[sDebugInfoButtonSeqID] == cButtonMask) {
                 sDebugInfoButtonSeqID++;
                 if (buttonArr[sDebugInfoButtonSeqID] == -1) {
@@ -359,7 +359,8 @@ UNUSED static void try_change_debug_page(void) {
 #ifdef VERSION_EU
 UNUSED static
 #endif
-void try_modify_debug_controls(void) {
+    void
+    try_modify_debug_controls(void) {
     s32 sp4;
 
     if (gPlayer1Controller->buttonPressed & Z_TRIG) {

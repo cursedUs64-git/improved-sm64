@@ -5,7 +5,7 @@ void func_802F4A20(void) {
     volatile u32 sp18;
     sp1c = &__osDiskHandle->transferInfo;
     WAIT_ON_IOBUSY(sp18);
-    HW_REG(ASIC_BM_CTL, u32) = BUFFER_MANAGER_RESET | sp1c->bmCtlShadow; //should be unk10??
+    HW_REG(ASIC_BM_CTL, u32) = BUFFER_MANAGER_RESET | sp1c->bmCtlShadow; // should be unk10??
     WAIT_ON_IOBUSY(sp18);
     HW_REG(ASIC_BM_CTL, u32) = sp1c->bmCtlShadow;
     func_802F4B08();

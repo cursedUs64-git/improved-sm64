@@ -15,16 +15,16 @@
 #include "surface_collision.h"
 
 // Macros for retrieving arguments from behavior scripts.
-#define BHV_CMD_GET_1ST_U8(index)  (u8)((gCurBhvCommand[index] >> 24) & 0xFF) // unused
-#define BHV_CMD_GET_2ND_U8(index)  (u8)((gCurBhvCommand[index] >> 16) & 0xFF)
-#define BHV_CMD_GET_3RD_U8(index)  (u8)((gCurBhvCommand[index] >> 8) & 0xFF)
-#define BHV_CMD_GET_4TH_U8(index)  (u8)((gCurBhvCommand[index]) & 0xFF)
+#define BHV_CMD_GET_1ST_U8(index) (u8)((gCurBhvCommand[index] >> 24) & 0xFF) // unused
+#define BHV_CMD_GET_2ND_U8(index) (u8)((gCurBhvCommand[index] >> 16) & 0xFF)
+#define BHV_CMD_GET_3RD_U8(index) (u8)((gCurBhvCommand[index] >> 8) & 0xFF)
+#define BHV_CMD_GET_4TH_U8(index) (u8)((gCurBhvCommand[index]) & 0xFF)
 
 #define BHV_CMD_GET_1ST_S16(index) (s16)(gCurBhvCommand[index] >> 16)
 #define BHV_CMD_GET_2ND_S16(index) (s16)(gCurBhvCommand[index] & 0xFFFF)
 
-#define BHV_CMD_GET_U32(index)     (u32)(gCurBhvCommand[index])
-#define BHV_CMD_GET_VPTR(index)    (void *)(gCurBhvCommand[index])
+#define BHV_CMD_GET_U32(index) (u32)(gCurBhvCommand[index])
+#define BHV_CMD_GET_VPTR(index) (void *) (gCurBhvCommand[index])
 
 #define BHV_CMD_GET_ADDR_OF_CMD(index) (uintptr_t)(&gCurBhvCommand[index])
 
@@ -172,7 +172,8 @@ static s32 bhv_cmd_spawn_obj(void) {
 
     struct Object *object = spawn_object_at_origin(gCurrentObject, 0, model, behavior);
     obj_copy_pos_and_angle(object, gCurrentObject);
-    // TODO: Does this cmd need renaming? This line is the only difference between this and the above func.
+    // TODO: Does this cmd need renaming? This line is the only difference between this and the above
+    // func.
     gCurrentObject->prevObj = object;
 
     gCurBhvCommand += 3;
@@ -213,23 +214,25 @@ static s32 bhv_cmd_break_unused(void) {
     return BHV_PROC_BREAK;
 }
 
-// Command 0x02: Jumps to a new behavior command and stores the return address in the object's behavior stack.
-// Usage: CALL(addr)
+// Command 0x02: Jumps to a new behavior command and stores the return address in the object's behavior
+// stack. Usage: CALL(addr)
 static s32 bhv_cmd_call(void) {
     const BehaviorScript *jumpAddress;
     gCurBhvCommand++;
 
-    cur_obj_bhv_stack_push(BHV_CMD_GET_ADDR_OF_CMD(1)); // Store address of the next bhv command in the stack.
+    cur_obj_bhv_stack_push(
+        BHV_CMD_GET_ADDR_OF_CMD(1)); // Store address of the next bhv command in the stack.
     jumpAddress = segmented_to_virtual(BHV_CMD_GET_VPTR(0));
     gCurBhvCommand = jumpAddress; // Jump to the new address.
 
     return BHV_PROC_CONTINUE;
 }
 
-// Command 0x03: Jumps back to the behavior command stored in the object's behavior stack. Used after CALL.
-// Usage: RETURN()
+// Command 0x03: Jumps back to the behavior command stored in the object's behavior stack. Used after
+// CALL. Usage: RETURN()
 static s32 bhv_cmd_return(void) {
-    gCurBhvCommand = (const BehaviorScript *) cur_obj_bhv_stack_pop(); // Retrieve command address and jump to it.
+    gCurBhvCommand =
+        (const BehaviorScript *) cur_obj_bhv_stack_pop(); // Retrieve command address and jump to it.
     return BHV_PROC_CONTINUE;
 }
 
@@ -242,14 +245,15 @@ static s32 bhv_cmd_delay(void) {
         gCurrentObject->bhvDelayTimer++; // Increment timer
     } else {
         gCurrentObject->bhvDelayTimer = 0;
-        gCurBhvCommand++; // Delay ended, move to next bhv command (note: following commands will not execute until next frame)
+        gCurBhvCommand++; // Delay ended, move to next bhv command (note: following commands will not
+                          // execute until next frame)
     }
 
     return BHV_PROC_BREAK;
 }
 
-// Command 0x25: Delays the behavior script for the number of frames given by the value of the specified field.
-// Usage: DELAY_VAR(field)
+// Command 0x25: Delays the behavior script for the number of frames given by the value of the specified
+// field. Usage: DELAY_VAR(field)
 static s32 bhv_cmd_delay_var(void) {
     u8 field = BHV_CMD_GET_2ND_U8(0);
     s32 num = cur_obj_get_int(field);
@@ -267,7 +271,7 @@ static s32 bhv_cmd_delay_var(void) {
 // Command 0x04: Jumps to a new behavior script without saving anything.
 // Usage: GOTO(addr)
 static s32 bhv_cmd_goto(void) {
-    gCurBhvCommand++; // Useless
+    gCurBhvCommand++;                                           // Useless
     gCurBhvCommand = segmented_to_virtual(BHV_CMD_GET_VPTR(0)); // Jump directly to address
     return BHV_PROC_CONTINUE;
 }
@@ -278,8 +282,9 @@ static s32 bhv_cmd_goto(void) {
 static s32 bhv_cmd_begin_repeat_unused(void) {
     s32 count = BHV_CMD_GET_2ND_U8(0);
 
-    cur_obj_bhv_stack_push(BHV_CMD_GET_ADDR_OF_CMD(1)); // Store address of the first command of the loop in the stack
-    cur_obj_bhv_stack_push(count); // Store repeat count in the stack too
+    cur_obj_bhv_stack_push(
+        BHV_CMD_GET_ADDR_OF_CMD(1)); // Store address of the first command of the loop in the stack
+    cur_obj_bhv_stack_push(count);   // Store repeat count in the stack too
 
     gCurBhvCommand++;
     return BHV_PROC_CONTINUE;
@@ -290,8 +295,9 @@ static s32 bhv_cmd_begin_repeat_unused(void) {
 static s32 bhv_cmd_begin_repeat(void) {
     s32 count = BHV_CMD_GET_2ND_S16(0);
 
-    cur_obj_bhv_stack_push(BHV_CMD_GET_ADDR_OF_CMD(1)); // Store address of the first command of the loop in the stack
-    cur_obj_bhv_stack_push(count); // Store repeat count in the stack too
+    cur_obj_bhv_stack_push(
+        BHV_CMD_GET_ADDR_OF_CMD(1)); // Store address of the first command of the loop in the stack
+    cur_obj_bhv_stack_push(count);   // Store repeat count in the stack too
 
     gCurBhvCommand++;
     return BHV_PROC_CONTINUE;
@@ -304,11 +310,12 @@ static s32 bhv_cmd_end_repeat(void) {
     count--;
 
     if (count != 0) {
-        gCurBhvCommand = (const BehaviorScript *) cur_obj_bhv_stack_pop(); // Jump back to the first command in the loop
+        gCurBhvCommand = (const BehaviorScript *)
+            cur_obj_bhv_stack_pop(); // Jump back to the first command in the loop
         // Save address and count to the stack again
         cur_obj_bhv_stack_push(BHV_CMD_GET_ADDR_OF_CMD(0));
         cur_obj_bhv_stack_push(count);
-    } else { // Finished iterating over the loop
+    } else {                     // Finished iterating over the loop
         cur_obj_bhv_stack_pop(); // Necessary to remove address from the stack
         gCurBhvCommand++;
     }
@@ -317,18 +324,19 @@ static s32 bhv_cmd_end_repeat(void) {
     return BHV_PROC_BREAK;
 }
 
-// Command 0x07: Also marks the end of a repeating loop, but continues executing commands following the loop on the same frame.
-// Usage: END_REPEAT_CONTINUE()
+// Command 0x07: Also marks the end of a repeating loop, but continues executing commands following the
+// loop on the same frame. Usage: END_REPEAT_CONTINUE()
 static s32 bhv_cmd_end_repeat_continue(void) {
     u32 count = cur_obj_bhv_stack_pop();
     count--;
 
     if (count != 0) {
-        gCurBhvCommand = (const BehaviorScript *) cur_obj_bhv_stack_pop(); // Jump back to the first command in the loop
+        gCurBhvCommand = (const BehaviorScript *)
+            cur_obj_bhv_stack_pop(); // Jump back to the first command in the loop
         // Save address and count to the stack again
         cur_obj_bhv_stack_push(BHV_CMD_GET_ADDR_OF_CMD(0));
         cur_obj_bhv_stack_push(count);
-    } else { // Finished iterating over the loop
+    } else {                     // Finished iterating over the loop
         cur_obj_bhv_stack_pop(); // Necessary to remove address from the stack
         gCurBhvCommand++;
     }
@@ -340,7 +348,8 @@ static s32 bhv_cmd_end_repeat_continue(void) {
 // Command 0x08: Marks the beginning of an infinite loop.
 // Usage: BEGIN_LOOP()
 static s32 bhv_cmd_begin_loop(void) {
-    cur_obj_bhv_stack_push(BHV_CMD_GET_ADDR_OF_CMD(1)); // Store address of the first command of the loop in the stack
+    cur_obj_bhv_stack_push(
+        BHV_CMD_GET_ADDR_OF_CMD(1)); // Store address of the first command of the loop in the stack
 
     gCurBhvCommand++;
     return BHV_PROC_CONTINUE;
@@ -349,8 +358,9 @@ static s32 bhv_cmd_begin_loop(void) {
 // Command 0x09: Marks the end of an infinite loop.
 // Usage: END_LOOP()
 static s32 bhv_cmd_end_loop(void) {
-    gCurBhvCommand = (const BehaviorScript *) cur_obj_bhv_stack_pop(); // Jump back to the first command in the loop
-    cur_obj_bhv_stack_push(BHV_CMD_GET_ADDR_OF_CMD(0)); // Save address to the stack again
+    gCurBhvCommand =
+        (const BehaviorScript *) cur_obj_bhv_stack_pop(); // Jump back to the first command in the loop
+    cur_obj_bhv_stack_push(BHV_CMD_GET_ADDR_OF_CMD(0));   // Save address to the stack again
 
     return BHV_PROC_BREAK;
 }
@@ -391,7 +401,8 @@ static s32 bhv_cmd_set_int(void) {
     return BHV_PROC_CONTINUE;
 }
 
-// Command 0x36: Unused. Sets the specified field to an integer. Wastes 4 bytes of space for no reason at all.
+// Command 0x36: Unused. Sets the specified field to an integer. Wastes 4 bytes of space for no reason
+// at all.
 static s32 bhv_cmd_set_int_unused(void) {
     u8 field = BHV_CMD_GET_2ND_U8(0);
     s32 value = BHV_CMD_GET_2ND_S16(1); // Taken from 2nd word instead of 1st
@@ -422,14 +433,14 @@ static s32 bhv_cmd_set_random_int(void) {
     s32 min = BHV_CMD_GET_2ND_S16(0);
     s32 range = BHV_CMD_GET_1ST_S16(1);
 
-    cur_obj_set_int(field, (s32)(range * random_float()) + min);
+    cur_obj_set_int(field, (s32) (range * random_float()) + min);
 
     gCurBhvCommand += 2;
     return BHV_PROC_CONTINUE;
 }
 
-// Command 0x13: Gets a random short, right shifts it the specified amount and adds min to it, then sets the specified field to that value.
-// Usage: SET_INT_RAND_RSHIFT(field, min, rshift)
+// Command 0x13: Gets a random short, right shifts it the specified amount and adds min to it, then sets
+// the specified field to that value. Usage: SET_INT_RAND_RSHIFT(field, min, rshift)
 static s32 bhv_cmd_set_int_rand_rshift(void) {
     u8 field = BHV_CMD_GET_2ND_U8(0);
     s32 min = BHV_CMD_GET_2ND_S16(0);
@@ -454,8 +465,8 @@ static s32 bhv_cmd_add_random_float(void) {
     return BHV_PROC_CONTINUE;
 }
 
-// Command 0x17: Gets a random short, right shifts it the specified amount and adds min to it, then adds the value to the specified field. Unused.
-// Usage: ADD_INT_RAND_RSHIFT(field, min, rshift)
+// Command 0x17: Gets a random short, right shifts it the specified amount and adds min to it, then adds
+// the value to the specified field. Unused. Usage: ADD_INT_RAND_RSHIFT(field, min, rshift)
 static s32 bhv_cmd_add_int_rand_rshift(void) {
     u8 field = BHV_CMD_GET_2ND_U8(0);
     s32 min = BHV_CMD_GET_2ND_S16(0);
@@ -597,8 +608,8 @@ static s32 bhv_cmd_sum_float(void) {
     return BHV_PROC_CONTINUE;
 }
 
-// Command 0x20: Sets the destination integer field to the sum of the values of the given integer fields. Unused.
-// Usage: SUM_INT(fieldDst, fieldSrc1, fieldSrc2)
+// Command 0x20: Sets the destination integer field to the sum of the values of the given integer
+// fields. Unused. Usage: SUM_INT(fieldDst, fieldSrc1, fieldSrc2)
 static s32 bhv_cmd_sum_int(void) {
     u32 fieldDst = BHV_CMD_GET_2ND_U8(0);
     u32 fieldSrc1 = BHV_CMD_GET_3RD_U8(0);
@@ -661,9 +672,8 @@ static s32 bhv_cmd_nop_4(void) {
     return BHV_PROC_CONTINUE;
 }
 
-// Command 0x00: Defines the start of the behavior script as well as the object list the object belongs to.
-// Has some special behavior for certain objects.
-// Usage: BEGIN(objList)
+// Command 0x00: Defines the start of the behavior script as well as the object list the object belongs
+// to. Has some special behavior for certain objects. Usage: BEGIN(objList)
 static s32 bhv_cmd_begin(void) {
     // These objects were likely very early objects, which is why this code is here
     // instead of in the respective behavior scripts.
@@ -683,10 +693,10 @@ static s32 bhv_cmd_begin(void) {
     return BHV_PROC_CONTINUE;
 }
 
-// An unused, incomplete behavior command that does not have an entry in the lookup table, and so no command number.
-// It cannot be simply re-added to the table, as unlike all other bhv commands it takes a parameter.
-// Theoretically this command would have been of variable size.
-// Included below is a modified/repaired version of this function that would work properly.
+// An unused, incomplete behavior command that does not have an entry in the lookup table, and so no
+// command number. It cannot be simply re-added to the table, as unlike all other bhv commands it takes
+// a parameter. Theoretically this command would have been of variable size. Included below is a
+// modified/repaired version of this function that would work properly.
 UNUSED static void bhv_cmd_set_int_random_from_table(s32 tableSize) {
     u8 field = BHV_CMD_GET_2ND_U8(0);
     s32 table[16];
@@ -697,7 +707,7 @@ UNUSED static void bhv_cmd_set_int_random_from_table(s32 tableSize) {
         table[i + 1] = BHV_CMD_GET_2ND_S16(i + 1);
     }
 
-    cur_obj_set_int(field, table[(s32)(tableSize * random_float())]);
+    cur_obj_set_int(field, table[(s32) (tableSize * random_float())]);
 
     // Does not increment gCurBhvCommand or return a bhv status
 }
@@ -779,9 +789,9 @@ static s32 bhv_cmd_scale(void) {
     return BHV_PROC_CONTINUE;
 }
 
-
 // Command 0x30: Sets various parameters that the object uses for calculating physics.
-// Usage: SET_OBJ_PHYSICS(wallHitboxRadius, gravity, bounciness, dragStrength, friction, buoyancy, unused1, unused2)
+// Usage: SET_OBJ_PHYSICS(wallHitboxRadius, gravity, bounciness, dragStrength, friction, buoyancy,
+// unused1, unused2)
 static s32 bhv_cmd_set_obj_physics(void) {
     UNUSED f32 unused1, unused2;
 
@@ -902,7 +912,8 @@ static BhvCommandProc BehaviorCmdTable[] = {
     bhv_cmd_spawn_water_droplet,
 };
 
-// Execute the behavior script of the current object, process the object flags, and other miscellaneous code for updating objects.
+// Execute the behavior script of the current object, process the object flags, and other miscellaneous
+// code for updating objects.
 void cur_obj_update(void) {
     UNUSED u8 filler[4];
 

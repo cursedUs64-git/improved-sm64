@@ -89,7 +89,8 @@ void bhv_goomba_triplet_spawner_update(void) {
                     s16 dz = 500.0f * sins(angle);
 
                     spawn_object_relative((o->oBehParams2ndByte & GOOMBA_TRIPLET_SPAWNER_BP_SIZE_MASK)
-                                           | (goombaFlag >> 6), dx, 0, dz, o, MODEL_GOOMBA, bhvGoomba);
+                                              | (goombaFlag >> 6),
+                                          dx, 0, dz, o, MODEL_GOOMBA, bhvGoomba);
                 }
             }
 
@@ -137,8 +138,8 @@ static void goomba_begin_jump(void) {
  */
 static void mark_goomba_as_dead(void) {
     if (o->parentObj != o) {
-        set_object_respawn_info_bits(
-            o->parentObj, (o->oBehParams2ndByte & GOOMBA_BP_TRIPLET_FLAG_MASK) >> 2);
+        set_object_respawn_info_bits(o->parentObj,
+                                     (o->oBehParams2ndByte & GOOMBA_BP_TRIPLET_FLAG_MASK) >> 2);
 
         o->parentObj->oBehParams =
             o->parentObj->oBehParams | (o->oBehParams2ndByte & GOOMBA_BP_TRIPLET_FLAG_MASK) << 6;

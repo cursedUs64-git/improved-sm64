@@ -27,7 +27,7 @@
 #define DEFINE_LEVEL(textname, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10) textname,
 
 static char sLevelSelectStageNames[64][16] = {
-    #include "levels/level_defines.h"
+#include "levels/level_defines.h"
 };
 #undef STUB_LEVEL
 #undef DEFINE_LEVEL
@@ -67,7 +67,7 @@ s32 run_level_id_or_demo(s32 level) {
                 // Use the first 4 bytes to store level ID,
                 // then use the rest of the values for inputs
                 gCurrDemoInput = ((struct DemoInput *) gDemoInputsBuf.bufTarget) + 1;
-                level = (s8)((struct DemoInput *) gDemoInputsBuf.bufTarget)->timer;
+                level = (s8) ((struct DemoInput *) gDemoInputsBuf.bufTarget)->timer;
                 gCurrSaveFileNum = 1;
                 gCurrActNum = 1;
             }

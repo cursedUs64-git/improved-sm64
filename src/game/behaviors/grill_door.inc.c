@@ -8,7 +8,7 @@ struct OpenableGrill {
 
 struct OpenableGrill gOpenableGrills[] = {
     { 320, MODEL_BOB_BARS_GRILLS, bob_seg7_collision_gate },
-    { 410, MODEL_HMC_RED_GRILLS,  hmc_seg7_collision_0702B65C },
+    { 410, MODEL_HMC_RED_GRILLS, hmc_seg7_collision_0702B65C },
 };
 
 void bhv_openable_cage_door_loop(void) {
@@ -46,8 +46,8 @@ void bhv_openable_grill_loop(void) {
             break;
 
         case 1:
-            if ((o->oOpenableGrillUnkF4 =
-                 cur_obj_nearest_object_with_behavior(bhvFloorSwitchGrills)) != NULL) {
+            if ((o->oOpenableGrillUnkF4 = cur_obj_nearest_object_with_behavior(bhvFloorSwitchGrills))
+                != NULL) {
                 o->oAction++;
             }
             break;

@@ -12,7 +12,7 @@ typedef struct {
 } exceptionPreamble;
 
 #if defined(VERSION_EU) || defined(VERSION_SH)
-extern u32 EU_D_802f4330(u32, void (*));
+extern u32 EU_D_802f4330(u32, void(*));
 extern void D_802F4380();
 
 #endif

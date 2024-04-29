@@ -73,49 +73,49 @@ struct RenderModeContainer {
 
 /* Rendermode settings for cycle 1 for all 8 layers. */
 struct RenderModeContainer renderModeTable_1Cycle[2] = { { {
-    G_RM_OPA_SURF,
-    G_RM_AA_OPA_SURF,
-    G_RM_AA_OPA_SURF,
-    G_RM_AA_OPA_SURF,
-    G_RM_AA_TEX_EDGE,
-    G_RM_AA_XLU_SURF,
-    G_RM_AA_XLU_SURF,
-    G_RM_AA_XLU_SURF,
-    } },
-    { {
-    /* z-buffered */
-    G_RM_ZB_OPA_SURF,
-    G_RM_AA_ZB_OPA_SURF,
-    G_RM_AA_ZB_OPA_DECAL,
-    G_RM_AA_ZB_OPA_INTER,
-    G_RM_AA_ZB_TEX_EDGE,
-    G_RM_AA_ZB_XLU_SURF,
-    G_RM_AA_ZB_XLU_DECAL,
-    G_RM_AA_ZB_XLU_INTER,
-    } } };
+                                                             G_RM_OPA_SURF,
+                                                             G_RM_AA_OPA_SURF,
+                                                             G_RM_AA_OPA_SURF,
+                                                             G_RM_AA_OPA_SURF,
+                                                             G_RM_AA_TEX_EDGE,
+                                                             G_RM_AA_XLU_SURF,
+                                                             G_RM_AA_XLU_SURF,
+                                                             G_RM_AA_XLU_SURF,
+                                                         } },
+                                                         { {
+                                                             /* z-buffered */
+                                                             G_RM_ZB_OPA_SURF,
+                                                             G_RM_AA_ZB_OPA_SURF,
+                                                             G_RM_AA_ZB_OPA_DECAL,
+                                                             G_RM_AA_ZB_OPA_INTER,
+                                                             G_RM_AA_ZB_TEX_EDGE,
+                                                             G_RM_AA_ZB_XLU_SURF,
+                                                             G_RM_AA_ZB_XLU_DECAL,
+                                                             G_RM_AA_ZB_XLU_INTER,
+                                                         } } };
 
 /* Rendermode settings for cycle 2 for all 8 layers. */
 struct RenderModeContainer renderModeTable_2Cycle[2] = { { {
-    G_RM_OPA_SURF2,
-    G_RM_AA_OPA_SURF2,
-    G_RM_AA_OPA_SURF2,
-    G_RM_AA_OPA_SURF2,
-    G_RM_AA_TEX_EDGE2,
-    G_RM_AA_XLU_SURF2,
-    G_RM_AA_XLU_SURF2,
-    G_RM_AA_XLU_SURF2,
-    } },
-    { {
-    /* z-buffered */
-    G_RM_ZB_OPA_SURF2,
-    G_RM_AA_ZB_OPA_SURF2,
-    G_RM_AA_ZB_OPA_DECAL2,
-    G_RM_AA_ZB_OPA_INTER2,
-    G_RM_AA_ZB_TEX_EDGE2,
-    G_RM_AA_ZB_XLU_SURF2,
-    G_RM_AA_ZB_XLU_DECAL2,
-    G_RM_AA_ZB_XLU_INTER2,
-    } } };
+                                                             G_RM_OPA_SURF2,
+                                                             G_RM_AA_OPA_SURF2,
+                                                             G_RM_AA_OPA_SURF2,
+                                                             G_RM_AA_OPA_SURF2,
+                                                             G_RM_AA_TEX_EDGE2,
+                                                             G_RM_AA_XLU_SURF2,
+                                                             G_RM_AA_XLU_SURF2,
+                                                             G_RM_AA_XLU_SURF2,
+                                                         } },
+                                                         { {
+                                                             /* z-buffered */
+                                                             G_RM_ZB_OPA_SURF2,
+                                                             G_RM_AA_ZB_OPA_SURF2,
+                                                             G_RM_AA_ZB_OPA_DECAL2,
+                                                             G_RM_AA_ZB_OPA_INTER2,
+                                                             G_RM_AA_ZB_TEX_EDGE2,
+                                                             G_RM_AA_ZB_XLU_SURF2,
+                                                             G_RM_AA_ZB_XLU_DECAL2,
+                                                             G_RM_AA_ZB_XLU_INTER2,
+                                                         } } };
 
 struct GraphNodeRoot *gCurGraphNodeRoot = NULL;
 struct GraphNodeMasterList *gCurGraphNodeMasterList = NULL;
@@ -226,7 +226,8 @@ static void geo_process_ortho_projection(struct GraphNodeOrthoProjection *node) 
 
         guOrtho(mtx, left, right, bottom, top, -2.0f, 2.0f, 1.0f);
         gSPPerspNormalize(gDisplayListHead++, 0xFFFF);
-        gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx), G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
+        gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx),
+                  G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
 
         geo_process_node_and_siblings(node->node.children);
     }
@@ -252,7 +253,8 @@ static void geo_process_perspective(struct GraphNodePerspective *node) {
         guPerspective(mtx, &perspNorm, node->fov, aspect, node->near, node->far, 1.0f);
         gSPPerspNormalize(gDisplayListHead++, perspNorm);
 
-        gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx), G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
+        gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx),
+                  G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
 
         gCurGraphNodeCamFrustum = node;
         geo_process_node_and_siblings(node->fnNode.node.children);
@@ -317,7 +319,8 @@ static void geo_process_camera(struct GraphNodeCamera *node) {
     }
     mtxf_rotate_xy(rollMtx, node->rollScreen);
 
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(rollMtx), G_MTX_PROJECTION | G_MTX_MUL | G_MTX_NOPUSH);
+    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(rollMtx),
+              G_MTX_PROJECTION | G_MTX_MUL | G_MTX_NOPUSH);
 
     mtxf_lookat(cameraTransform, node->pos, node->focus, node->roll);
     mtxf_mul(gMatStack[gMatStackIndex + 1], cameraTransform, gMatStack[gMatStackIndex]);
@@ -485,7 +488,7 @@ static void geo_process_display_list(struct GraphNodeDisplayList *node) {
 static void geo_process_generated_list(struct GraphNodeGenerated *node) {
     if (node->fnNode.func != NULL) {
         Gfx *list = node->fnNode.func(GEO_CONTEXT_RENDER, &node->fnNode.node,
-                                     (struct AllocOnlyPool *) gMatStack[gMatStackIndex]);
+                                      (struct AllocOnlyPool *) gMatStack[gMatStackIndex]);
 
         if (list != NULL) {
             geo_append_display_list((void *) VIRTUAL_TO_PHYSICAL(list), node->fnNode.node.flags >> 8);
@@ -522,7 +525,7 @@ static void geo_process_background(struct GraphNodeBackground *node) {
         gDPSetCycleType(gfx++, G_CYC_FILL);
         gDPSetFillColor(gfx++, node->background);
         gDPFillRectangle(gfx++, GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(0), BORDER_HEIGHT,
-        GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(0) - 1, SCREEN_HEIGHT - BORDER_HEIGHT - 1);
+                         GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(0) - 1, SCREEN_HEIGHT - BORDER_HEIGHT - 1);
         gDPPipeSync(gfx++);
         gDPSetCycleType(gfx++, G_CYC_1CYCLE);
         gSPEndDisplayList(gfx++);
@@ -770,7 +773,7 @@ static s32 obj_is_in_view(struct GraphNodeObject *node, Mat4 matrix) {
 
     if (geo != NULL && geo->type == GRAPH_NODE_TYPE_CULLING_RADIUS) {
         cullingRadius =
-            (f32)((struct GraphNodeCullingRadius *) geo)->cullingRadius; //! Why is there a f32 cast?
+            (f32) ((struct GraphNodeCullingRadius *) geo)->cullingRadius; //! Why is there a f32 cast?
     } else {
         cullingRadius = 300;
     }

@@ -20,7 +20,8 @@ void bhv_spawned_star_init(void) {
     }
     sp24 = (o->oBehParams >> 24) & 0xFF;
 
-    if (bit_shift_left(sp24) & save_file_get_star_flags(gCurrSaveFileNum - 1, COURSE_NUM_TO_INDEX(gCurrCourseNum))) {
+    if (bit_shift_left(sp24)
+        & save_file_get_star_flags(gCurrSaveFileNum - 1, COURSE_NUM_TO_INDEX(gCurrCourseNum))) {
         cur_obj_set_model(MODEL_TRANSPARENT_STAR);
     }
 

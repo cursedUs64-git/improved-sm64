@@ -37,7 +37,8 @@ struct SPTask *create_next_audio_frame_task(void) {
 
     gAudioFrameCount++;
     if (gAudioFrameCount % gAudioBufferParameters.presetUnk4 != 0) {
-        if ((gAudioFrameCount % gAudioBufferParameters.presetUnk4) + 1 == gAudioBufferParameters.presetUnk4) {
+        if ((gAudioFrameCount % gAudioBufferParameters.presetUnk4) + 1
+            == gAudioBufferParameters.presetUnk4) {
             return D_SH_80314FCC;
         }
         return NULL;
@@ -91,8 +92,11 @@ struct SPTask *create_next_audio_frame_task(void) {
     index = gCurrAiBufferIndex;
     currAiBuffer = gAiBuffers[index];
 
-    gAiBufferLengths[index] = (s16) ((((gAudioBufferParameters.samplesPerFrameTarget - samplesRemainingInAI) +
-         EXTRA_BUFFERED_AI_SAMPLES_TARGET) & ~0xf) + SAMPLES_TO_OVERPRODUCE);
+    gAiBufferLengths[index] =
+        (s16) ((((gAudioBufferParameters.samplesPerFrameTarget - samplesRemainingInAI)
+                 + EXTRA_BUFFERED_AI_SAMPLES_TARGET)
+                & ~0xf)
+               + SAMPLES_TO_OVERPRODUCE);
     if (gAiBufferLengths[index] < gAudioBufferParameters.minAiBufferLength) {
         gAiBufferLengths[index] = gAudioBufferParameters.minAiBufferLength;
     }
@@ -166,8 +170,7 @@ void eu_process_audio_cmd(struct EuAudioCmd *cmd) {
             if (gSequencePlayers[cmd->u.s.arg1].enabled != FALSE) {
                 if (cmd->u2.as_s32 == 0) {
                     sequence_player_disable(&gSequencePlayers[cmd->u.s.arg1]);
-                }
-                else {
+                } else {
                     seq_player_fade_to_zero_volume(cmd->u.s.arg1, cmd->u2.as_s32);
                 }
             }
@@ -295,7 +298,7 @@ void func_sh_802F64C8(void) {
         D_SH_8031503C = (D_SH_80350F18 - D_SH_80350F19 + 0x100) & 0xff;
     }
     mesg = ((D_SH_80350F19 & 0xff) << 8) | (D_SH_80350F18 & 0xff);
-    osSendMesg(D_SH_80350F68, (OSMesg)mesg, OS_MESG_NOBLOCK);
+    osSendMesg(D_SH_80350F68, (OSMesg) mesg, OS_MESG_NOBLOCK);
     D_SH_80350F19 = D_SH_80350F18;
 }
 
@@ -333,16 +336,13 @@ void func_802ad7ec(u32 arg0) {
         if (cmd->u.s.op == 0xf8) {
             D_SH_8031509C = 1;
             break;
-        }
-        else if ((cmd->u.s.op & 0xf0) == 0xf0) {
+        } else if ((cmd->u.s.op & 0xf0) == 0xf0) {
             eu_process_audio_cmd(cmd);
-        }
-        else if (cmd->u.s.arg1 < SEQUENCE_PLAYERS) {
+        } else if (cmd->u.s.arg1 < SEQUENCE_PLAYERS) {
             seqPlayer = &gSequencePlayers[cmd->u.s.arg1];
             if ((cmd->u.s.op & 0x80) != 0) {
                 eu_process_audio_cmd(cmd);
-            }
-            else if ((cmd->u.s.op & 0x40) != 0) {
+            } else if ((cmd->u.s.op & 0x40) != 0) {
                 switch (cmd->u.s.op) {
                     case 0x41:
                         if (seqPlayer->fadeVolumeScale != cmd->u2.as_f32) {
@@ -367,8 +367,7 @@ void func_802ad7ec(u32 arg0) {
                         seqPlayer->seqVariationEu[cmd->u.s.arg3] = cmd->u2.as_s8;
                         break;
                 }
-            }
-            else if (seqPlayer->enabled != FALSE && cmd->u.s.arg2 < 0x10) {
+            } else if (seqPlayer->enabled != FALSE && cmd->u.s.arg2 < 0x10) {
                 chan = seqPlayer->channels[cmd->u.s.arg2];
                 if (IS_SEQUENCE_CHANNEL_VALID(chan)) {
                     switch (cmd->u.s.op) {

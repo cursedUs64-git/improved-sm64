@@ -85,9 +85,8 @@ static struct BowserPuzzlePiece sBowserPuzzlePieces[] = {
 /**
  * Spawn a single puzzle piece.
  */
-void bhv_lll_bowser_puzzle_spawn_piece(s16 model, const BehaviorScript *behavior,
-                                       f32 xOffset, f32 zOffset,
-                                       s8 initialAction, s8 *actionList) {
+void bhv_lll_bowser_puzzle_spawn_piece(s16 model, const BehaviorScript *behavior, f32 xOffset,
+                                       f32 zOffset, s8 initialAction, s8 *actionList) {
     struct Object *puzzlePiece = spawn_object(o, model, behavior);
     puzzlePiece->oPosX += xOffset;
     puzzlePiece->oPosY += 50.0f;
@@ -256,12 +255,9 @@ void bhv_lll_bowser_puzzle_piece_move_down(void) {
 }
 
 void (*sBowserPuzzlePieceActions[])(void) = {
-    bhv_lll_bowser_puzzle_piece_action_0,
-    bhv_lll_bowser_puzzle_piece_action_1,
-    bhv_lll_bowser_puzzle_piece_idle,
-    bhv_lll_bowser_puzzle_piece_move_left,
-    bhv_lll_bowser_puzzle_piece_move_right,
-    bhv_lll_bowser_puzzle_piece_move_up,
+    bhv_lll_bowser_puzzle_piece_action_0,   bhv_lll_bowser_puzzle_piece_action_1,
+    bhv_lll_bowser_puzzle_piece_idle,       bhv_lll_bowser_puzzle_piece_move_left,
+    bhv_lll_bowser_puzzle_piece_move_right, bhv_lll_bowser_puzzle_piece_move_up,
     bhv_lll_bowser_puzzle_piece_move_down,
 };
 

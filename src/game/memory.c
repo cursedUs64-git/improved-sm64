@@ -47,7 +47,6 @@ extern u8 *sPoolEnd;
 extern struct MainPoolBlock *sPoolListHeadL;
 extern struct MainPoolBlock *sPoolListHeadR;
 
-
 /**
  * Memory pool for small graphical effects that aren't connected to Objects.
  * Used for colored text, paintings, and environmental snow and bubbles.
@@ -60,7 +59,6 @@ u8 *sPoolStart;
 u8 *sPoolEnd;
 struct MainPoolBlock *sPoolListHeadL;
 struct MainPoolBlock *sPoolListHeadR;
-
 
 static struct MainPoolState *gMainPoolState = NULL;
 
@@ -533,10 +531,9 @@ void *alloc_display_list(u32 size) {
 }
 
 static struct DmaTable *load_dma_table_address(u8 *srcAddr) {
-    struct DmaTable *table = dynamic_dma_read(srcAddr, srcAddr + sizeof(u32),
-                                                             MEMORY_POOL_LEFT);
-    u32 size = table->count * sizeof(struct OffsetSizePair) + 
-        sizeof(struct DmaTable) - sizeof(struct OffsetSizePair);
+    struct DmaTable *table = dynamic_dma_read(srcAddr, srcAddr + sizeof(u32), MEMORY_POOL_LEFT);
+    u32 size = table->count * sizeof(struct OffsetSizePair) + sizeof(struct DmaTable)
+               - sizeof(struct OffsetSizePair);
     main_pool_free(table);
 
     table = dynamic_dma_read(srcAddr, srcAddr + size, MEMORY_POOL_LEFT);
@@ -556,7 +553,7 @@ s32 load_patchable_table(struct DmaHandlerList *list, s32 index) {
     s32 ret = FALSE;
     struct DmaTable *table = list->dmaTable;
 
-    if ((u32)index < table->count) {
+    if ((u32) index < table->count) {
         u8 *addr = table->srcAddr + table->anim[index].offset;
         s32 size = table->anim[index].size;
 

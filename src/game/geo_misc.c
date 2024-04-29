@@ -40,7 +40,8 @@ s8 gFlyingCarpetState;
  * Create a vertex with the given parameters and insert it into `vtx` at
  * position `n`.
  *
- * Texture coordinates are s10.5 fixed-point, which means you should left-shift the actual coordinates by 5.
+ * Texture coordinates are s10.5 fixed-point, which means you should left-shift the actual coordinates
+ * by 5.
  */
 #ifndef GBI_FLOATS
 void make_vertex(Vtx *vtx, s32 n, s16 x, s16 y, s16 z, s16 tx, s16 ty, u8 r, u8 g, u8 b, u8 a) {

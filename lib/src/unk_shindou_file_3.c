@@ -22,5 +22,4 @@ s32 func_8030A5C0(OSMesgQueue *arg0, s32 arg1) { // TODO: This is almost certain
         return 4;
     }
     return sp34;
-    
 }
