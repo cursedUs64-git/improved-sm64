@@ -15,10 +15,10 @@ A prior copy of the game is required to extract the assets.
 
 ## Quick Start (for Ubuntu)
 
-1. Install prerequisites: `sudo apt install -y binutils-mips-linux-gnu build-essential git pkgconf python3`
-2. Clone the repo from within Linux: `git clone https://github.com/n64decomp/sm64.git`
+1. Install prerequisites: `sudo apt install -y binutils-mips-linux-gnu build-essential git pkgconf python3 bsdmainutils`
+2. Clone the repo from within Linux: `git clone https://github.com/cursedUs64-git/qol-sm64.git`
 3. Place a Super Mario 64 ROM called `baserom.<VERSION>.z64` into the project folder for asset extraction, where `VERSION` can be `jp`, `us`, `eu`, or `sh`.
-4. Run `make` to build. Specify the version through `make VERSION=<VERSION>`. Add `-j4` to improve build speed (hardware dependent).
+4. Run `make` to build. Specify the version through `make VERSION=<VERSION>`. Add `-j<No. of cores>` to improve build speed (hardware dependent).
 
 Ensure the repo path length does not exceed 255 characters. Long path names result in build errors.
 
@@ -32,7 +32,7 @@ We recommend either Debian or Ubuntu 18.04 Linux distributions under WSL.
 Note: WSL1 does not currently support Ubuntu 20.04.
 
 Next, clone the SM64 repo from within the Linux shell:
-`git clone https://github.com/n64decomp/sm64.git`
+`git clone https://github.com/cursedUs64-git/qol-sm64.git`
 
 Then continue following the directions in the [Linux](#linux) installation section below.
 
@@ -54,18 +54,23 @@ Dependency installation instructions for common Linux distros are provided below
 To install build dependencies:
 
 ```bash
-sudo apt install -y binutils-mips-linux-gnu build-essential git pkgconf python3
+sudo apt install -y binutils-mips-linux-gnu build-essential git pkgconf python3 bsdmainutils
 ```
+
+Optionally, install the .deb for qemu-irix
 
 ##### Arch Linux
 To install build dependencies:
 
 ```bash
-sudo pacman -S base-devel python
+sudo pacman -S base-devel python audiofile
 ```
 
 Install the following AUR packages:
 * [mips64-elf-binutils](https://aur.archlinux.org/packages/mips64-elf-binutils) (AUR)
+
+Optionally, Install the following AUR packages:
+* [qemu-irix-git](https://aur.archlinux.org/packages/qemu-irix-git) (AUR)
 
 ##### Other Linux distributions
 
